@@ -174,6 +174,14 @@ int main(int argc, char const *argv[])
                     printf("opening file : %s\n",buffer);
                     // printf("attempting reading from %s\n",buffer);
                     int f_write = open(buffer, O_RDONLY); 
+                    struct stat file1Stat;
+
+                    int okay1 = stat(buffer, &file1Stat);
+                    if(okay1==0 && S_ISDIR(file1Stat.st_mode) && f_write>=1){
+                        close(f_write);
+                        f_write = 0;
+                    }
+
 
                     if(f_write<1){
                         send(new_socket , "NO" , strlen("NO") , 0 );////// SENDSOCBOY
